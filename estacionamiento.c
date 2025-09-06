@@ -21,7 +21,7 @@ int main() {
         printf("\n=== Bienvenido al Control de estacionamiento ===\n");
         printf("1. Registrar Entrada de Vehículo\n");
         printf("2. Registrar Salida de Vehículo\n");
-        printf("3. Ver Estacionamiento actual");
+        printf("3. Ver Estacionamiento actual\n");
         printf("0. Volver al menú anterior\n");
         printf("Seleccione una opción: ");
         scanf("%d", &subopcion);
