@@ -4,24 +4,24 @@
 
 // Definición de la estructura Auto
 typedef struct { 
-    char placa[10];
-    int horaLlegada;
-    int horaSalida;
+    char matricula[10];
+    int hora_llegada;
+    int hora_Salida;
 } Auto;
 
 #define MAX_COLA 35
 
-// Definición de la estructura Cola (cola circular)
+// Definición de la estructura ColaEspera (cola circular)
 typedef struct {
     Auto *autos;      // Array dinámico de autos
     int frente;       // Índice del frente de la cola
     int final;        // Índice del final de la cola
     int capacidad;    // Capacidad máxima de la cola
     int tamaño;       // Cantidad actual de elementos en la cola
-} Cola;
+} ColaEspera;
 
 // Inicializa la cola con una capacidad dada
-void inicializar_cola(Cola *cola, int capacidad) {
+void inicializar_ColaEspera(ColaEspera *cola, int capacidad) {
     cola->autos = (Auto *)malloc(capacidad * sizeof(Auto));
     cola->frente = 0;
     cola->final = -1;
@@ -30,17 +30,17 @@ void inicializar_cola(Cola *cola, int capacidad) {
 }
 
 // Devuelve 1 si la cola está vacía, 0 en caso contrario
-int esta_vacia(Cola *cola) {
+int esta_vacia(ColaEspera *cola) {
     return cola->tamaño == 0;
 }
 
 // Devuelve 1 si la cola está llena, 0 en caso contrario
-int esta_llena(Cola *cola) {
+int esta_llena(ColaEspera *cola) {
     return cola->tamaño == cola->capacidad;
 }
 
 // Agrega un auto al final de la cola si no está llena
-void encolar(Cola *cola, Auto a) {
+void encolar(ColaEspera *cola, Auto a) {
     if (!esta_llena(cola)) {
         cola->final = (cola->final + 1) % cola->capacidad;
         cola->autos[cola->final] = a;
@@ -51,7 +51,7 @@ void encolar(Cola *cola, Auto a) {
 }
 
 // Elimina y devuelve el auto al frente de la cola si no está vacía
-Auto desencolar(Cola *cola) {
+Auto desencolar(ColaEspera *cola) {
     Auto a = {"", -1, -1};
     if (!esta_vacia(cola)) {
         a = cola->autos[cola->frente];
@@ -64,7 +64,7 @@ Auto desencolar(Cola *cola) {
 }
 
 // Muestra todos los autos en la cola
-void mostrar_cola(Cola *cola) {
+void mostrar_cola(ColaEspera *cola) {
     if (esta_vacia(cola)) {
         printf("La cola está vacía.\n");
         return;
@@ -72,9 +72,9 @@ void mostrar_cola(Cola *cola) {
     printf("Cola de espera:\n");
     for (int i = 0; i < cola->tamaño; i++) {
         int index = (cola->frente + i) % cola->capacidad;
-        printf("Placa: %s, Hora de llegada: %d, Hora de salida: %d\n", 
-               cola->autos[index].placa, 
-               cola->autos[index].horaLlegada, 
-               cola->autos[index].horaSalida);
+        printf("Matricula: %s, Hora de llegada: %d, Hora de salida: %d\n", 
+               cola->autos[index].matricula, 
+               cola->autos[index].hora_llegada, 
+               cola->autos[index].hora_Salida);
     }
 }
