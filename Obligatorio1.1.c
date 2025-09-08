@@ -55,12 +55,13 @@ Auto crearAutoDesdeInput() {
     fgets(matricula, sizeof(matricula), stdin);
     matricula[strcspn(matricula, "\n")] = 0;
 
-    printf("Ingrese hora de llegada (hh mm): ");
-    scanf("%d %d", &hora_llegada, &minutos_llegada);
+    printf("Ingrese hora de llegada (hh): ");
+    scanf("%d", &hora_llegada);
+    printf("Ingrese minuto de llegada (mm): ");
+    scanf("%d", &minutos_llegada);
 
     return crearAuto(nombreProp, modelo, matricula, hora_llegada, minutos_llegada, -1, -1);
 }
-
 #define MAX_COLA 35
 
 // Definición de la estructura ColaEspera (cola circular)
@@ -141,8 +142,9 @@ int main() {
     do {
         // Mostrar el menú
         printf("\n=== Bienvenido al registro de vehículo ===\n");
-        printf("1. Ver Estacionamiento\n");
-        printf("2. Ver cola de espera\n");
+        printf("1. Control de Estacionamiento\n");
+        printf("2. Control de cola de espera\n");
+        printf("3. Ver historial de vehículos\n");
         printf("0. Salir\n");
         printf("Seleccione una opción: ");
         scanf("%d", &opcion);
@@ -171,6 +173,10 @@ int main() {
                                 printf("Vehículo registrado correctamente.\n");
                             } else {
                                 printf("Estacionamiento lleno.\n");
+                                printf("Agregando vehículo a la cola de espera.\n");
+                                Auto a = crearAutoDesdeInput();
+                                encolar(&cola, a);
+
                             }
                             break;
 
@@ -185,6 +191,8 @@ int main() {
                                 printf("\n--- Autos en el estacionamiento ---\n");
                                 for (int i = 0; i < cantidadAutos; i++) {
                                     printf("Propietario: %s | Modelo: %s | Matrícula: %s | Llegada: %02d:%02d\n",
+                                           estacionamiento[i].nombreProp,
+                                           estacionamiento[i].modelo,
                                            estacionamiento[i].matricula,
                                            estacionamiento[i].hora_llegada,
                                            estacionamiento[i].minutos_llegada);
@@ -207,8 +215,8 @@ int main() {
                     printf("1. Ver Cola de espera\n");
                     printf("2. Registrar Salida de Vehículo\n");
                     printf("0. Volver al menú anterior\n");
-                    printf("3.[DEBUG] Encolar vehículo de prueba\n");
-                    printf("4.[DEBUG] Desencolar vehículo de prueba\n");
+                    printf("3.[DEBUG] Encolar vehículo de prueba\n"); //ELIMINAR ESTO Y CASE ASOCIADO
+                    printf("4.[DEBUG] Desencolar vehículo de prueba\n"); //ELIMINAR ESTO Y CASE ASOCIADO
                     printf("Seleccione una opción: ");
                     scanf("%d", &subopcion);
 
@@ -240,7 +248,26 @@ int main() {
                     }
                 } while (1);
                 break;
-
+            case 3:
+                printf("\n--- Historial de vehículos ---\n");
+                if (cantidadAutos == 0) {
+                    printf("No hay vehículos en el historial.\n");
+                } else {
+                    for (int i = 0; i < cantidadAutos; i++) {
+                        printf("Propietario: %s | Modelo: %s | Matrícula: %s | Llegada: %02d:%02d | Salida: ",
+                               estacionamiento[i].nombreProp,
+                               estacionamiento[i].modelo,
+                               estacionamiento[i].matricula,
+                               estacionamiento[i].hora_llegada,
+                               estacionamiento[i].minutos_llegada);
+                        if (estacionamiento[i].hora_Salida == -1) {
+                            printf("No registrada\n");
+                        } else {
+                            printf("%02d:%02d\n", estacionamiento[i].hora_Salida, estacionamiento[i].minutos_Salida);
+                        }
+                    }
+                }
+                break;
             case 0:
                 printf("Gracias por usar Autocar\n");
                 break;
