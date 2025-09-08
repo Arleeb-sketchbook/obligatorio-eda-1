@@ -77,8 +77,11 @@ Auto crearAutoDesdeInput() {
         }
     }
 
-    printf("Ingrese hora de llegada (hh mm): ");
-    scanf("%d %d", &hora_llegada, &minutos_llegada);
+    printf("Ingrese hora de llegada (hh): ");
+    scanf("%d", &hora_llegada);
+    printf("Ingrese minuto de llegada (mm): ");
+    scanf("%d", &minutos_llegada);
+
 
     return crearAuto(nombreProp, modelo, matricula, hora_llegada, minutos_llegada, -1, -1);
 }
