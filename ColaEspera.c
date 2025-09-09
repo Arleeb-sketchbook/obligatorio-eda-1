@@ -20,6 +20,13 @@ typedef struct {
     int tamaño;       // Cantidad actual de elementos en la cola
 } Cola;
 
+// Definición de la estructura Historial
+typedef struct {
+    Auto *autos;      // Array dinámico para almacenar autos que salieron de la cola
+    int cantidad;     // Número actual de autos en el historial
+    int capacidad;    // Capacidad máxima del historial
+} Historial;
+
 // Inicializa la cola con una capacidad dada
 void inicializar_cola(Cola *cola, int capacidad) {
     cola->autos = (Auto *)malloc(capacidad * sizeof(Auto));
@@ -27,6 +34,13 @@ void inicializar_cola(Cola *cola, int capacidad) {
     cola->final = -1;
     cola->capacidad = capacidad;
     cola->tamaño = 0;
+}
+
+// Inicializa el historial
+void inicializar_historial(Historial *historial, int capacidad) {
+    historial->autos = (Auto *)malloc(capacidad * sizeof(Auto));
+    historial->cantidad = 0;
+    historial->capacidad = capacidad;
 }
 
 // Devuelve 1 si la cola está vacía, 0 en caso contrario
@@ -51,12 +65,20 @@ void encolar(Cola *cola, Auto a) {
 }
 
 // Elimina y devuelve el auto al frente de la cola si no está vacía
-Auto desencolar(Cola *cola) {
+Auto desencolar(Cola *cola, Historial *historial) {
     Auto a = {"", -1, -1};
     if (!esta_vacia(cola)) {
         a = cola->autos[cola->frente];
         cola->frente = (cola->frente + 1) % cola->capacidad;
         cola->tamaño--;
+
+        // Guardar en historial
+        if (historial->cantidad < historial->capacidad) {
+            historial->autos[historial->cantidad] = a;
+            historial->cantidad++;
+        } else {
+            printf("Historial lleno, no se puede guardar más autos.\n");
+        }
     } else {
         printf("Cola vacía, no se puede desencolar.\n");
     }
@@ -76,5 +98,20 @@ void mostrar_cola(Cola *cola) {
                cola->autos[index].placa, 
                cola->autos[index].horaLlegada, 
                cola->autos[index].horaSalida);
+    }
+}
+
+// Muestra el historial de autos que ya salieron de la cola
+void mostrar_historial(Historial *historial) {
+    if (historial->cantidad == 0) {
+        printf("El historial está vacío.\n");
+        return;
+    }
+    printf("Historial de autos:\n");
+    for (int i = 0; i < historial->cantidad; i++) {
+        printf("Placa: %s, Hora de llegada: %d, Hora de salida: %d\n",
+               historial->autos[i].placa,
+               historial->autos[i].horaLlegada,
+               historial->autos[i].horaSalida);
     }
 }
