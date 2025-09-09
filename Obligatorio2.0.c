@@ -6,19 +6,17 @@
 #define MAX_COLA 35
 #define MAX_HISTORIAL 200
 
-// ================== ESTRUCTURAS ==================
-// Estructura Auto
 typedef struct {
     char nombreProp[50];
     char modelo[50];
-    char matricula[8]; // 7 + '\0'
+    char matricula[8];
     int hora_llegada;
     int minutos_llegada;
     int hora_Salida;
     int minutos_Salida;
 } Auto;
 
-// Estructura de pila
+
 typedef struct {
     Auto datos[MAX_AUTOS];
     int tope;
@@ -28,7 +26,6 @@ typedef struct {
     int tope;
 } PilaAuxiliar;
 
-// Estructura de cola circular
 typedef struct {
     Auto *autos;
     int frente;
@@ -37,14 +34,12 @@ typedef struct {
     int tamaño;
 } ColaEspera;
 
-// Estructura Historial
 typedef struct {
     Auto *autos;
     int cantidad;
     int capacidad;
 } Historial;
 
-// ================== FUNCIONES AUTO ==================
 Auto crearAuto(const char *nombreProp, const char *modelo, const char *matricula,
                int hora_llegada, int minutos_llegada, int hora_Salida, int minutos_Salida) {
     Auto p;
@@ -109,7 +104,6 @@ void mostrarAuto(Auto a) {
     printf("------------------\n");
 }
 
-// ================== FUNCIONES PILA ==================
 PilaAuto* crearPilaAuto() {
     PilaAuto* pila = (PilaAuto*)malloc(sizeof(PilaAuto));
     pila->tope = -1;
@@ -132,7 +126,6 @@ Auto pop(PilaAuto* pila) {
     return pila->datos[pila->tope--];
 }
 
-//=================== Funciones pila auxiliar ===================
 PilaAuxiliar* crearPilaAuxiliar() {
     PilaAuxiliar* pila = (PilaAuxiliar*)malloc(sizeof(PilaAuxiliar));
     pila->tope = -1;
@@ -155,8 +148,6 @@ Auto pop_aux(PilaAuxiliar* pila) {
     return pila->datos[pila->tope--];
 }
 
-
-// ================== FUNCIONES COLA ==================
 void inicializar_ColaEspera(ColaEspera *cola, int capacidad) {
     cola->autos = (Auto *)malloc(capacidad * sizeof(Auto));
     cola->frente = 0;
@@ -202,7 +193,9 @@ void mostrar_cola(ColaEspera *cola) {
     for (int i = 0; i < cola->tamaño; i++) {
         int index = (cola->frente + i) % cola->capacidad;
         if (cola->autos[index].hora_Salida == -1) {
-            printf("Matricula: %s, Hora de llegada: %02d:%02d\n",
+            printf("Propietario:%s, Modelo:%s, Matricula: %s, Hora de llegada: %02d:%02d\n",
+                     cola->autos[index].nombreProp,
+                     cola->autos[index].modelo,
                    cola->autos[index].matricula,
                    cola->autos[index].hora_llegada,
                    cola->autos[index].minutos_llegada);
@@ -210,7 +203,6 @@ void mostrar_cola(ColaEspera *cola) {
     }
 }
 
-// ================== FUNCIONES HISTORIAL ==================
 void inicializar_historial(Historial *historial, int capacidad) {
     historial->autos = (Auto *)malloc(capacidad * sizeof(Auto));
     historial->cantidad = 0;
@@ -236,14 +228,10 @@ void mostrar_historial(Historial *historial) {
     }
 }
 
-// ================== Estacionamento lleno? ==================
 int estacionamentoIsFull(PilaAuto* estacionamiento){
     return (estacionamiento->tope + 1 >= MAX_AUTOS);
 }
 
-
-
-// ================== MAIN ==================
 int main() {
     int opcion;
     ColaEspera cola;
@@ -320,9 +308,6 @@ int main() {
                                         push_aux(pilaAux, temp);
                                     }
                                 }
-                                    // Ahora el auto deseado está en la cima de la pila principal
-
-
 
                                 int hs, ms;
                                 printf("Ingrese hora de salida (hh): ");
@@ -421,116 +406,3 @@ int main() {
     return 0;
 }
 
-/* 
-======================================================
-        SISTEMA DE ESTACIONAMIENTO Y COLA
-======================================================
-
-MANUAL DE EJEMPLOS DE EJECUCIÓN:
-
-Ejemplo 1: Registrar entrada de un vehículo
-------------------------------------------
-Menú principal:
-1. Ver Estacionamiento
-2. Ver cola de espera
-3. Ver historial de vehículos
-0. Salir
-Seleccione una opción: 1
-
-Submenú de estacionamiento:
-1. Registrar Entrada de Vehículo
-2. Registrar Salida de Vehículo
-3. Ver Estacionamiento actual
-0. Volver
-Seleccione una opción: 1
-
-Ingrese nombre del propietario: Juan Perez
-Ingrese modelo del auto: Toyota Corolla
-Ingrese matrícula (7 caracteres): ABC1234
-Ingrese hora de llegada (hh): 8
-Ingrese minuto de llegada (mm): 30
-
-Salida en pantalla:
-"Vehículo registrado correctamente."
-
-
-Ejemplo 2: Registrar salida de un vehículo
-------------------------------------------
-Menú principal -> Opción 1 (Estacionamiento)
-Submenú -> Opción 2 (Registrar Salida)
-
-Ingrese hora de salida (hh): 10
-Ingrese minuto de salida (mm): 15
-
-Salida en pantalla:
---- Vehículo ---
-Propietario: Juan Perez
-Modelo: Toyota Corolla
-Matrícula: ABC1234
-Hora de llegada: 08:30
-Hora de salida: 10:15
-------------------
-
-El vehículo queda guardado en el HISTORIAL.
-
-
-Ejemplo 3: Cola de espera
--------------------------
-Si el estacionamiento está lleno, al registrar un nuevo vehículo:
-Salida en pantalla:
-"Estacionamiento lleno. Vehículo enviado a la cola de espera."
-
-Para ver los autos en espera:
-Menú principal -> Opción 2 (Cola de espera)
-Submenú -> Opción 1 (Ver Cola de espera)
-
-
-Ejemplo 4: Registrar salida desde la cola
------------------------------------------
-Menú principal -> Opción 2 (Cola de espera)
-Submenú -> Opción 2 (Registrar Salida)
-
-Ingrese hora de salida (hh): 9
-Ingrese minuto de salida (mm): 45
-
-Salida en pantalla:
-Salida de la cola:
---- Vehículo ---
-Propietario: Ana López
-Modelo: Ford Fiesta
-Matrícula: XYZ5678
-Hora de llegada: 08:50
-Hora de salida: 09:45
-------------------
-
-El vehículo queda guardado en el HISTORIAL.
-
-
-Ejemplo 5: Consultar historial
-------------------------------
-Menú principal -> Opción 3 (Ver historial de vehículos)
-
-Salida en pantalla (ejemplo):
-=== Historial de Vehículos ===
---- Vehículo ---
-Propietario: Juan Perez
-Modelo: Toyota Corolla
-Matrícula: ABC1234
-Hora de llegada: 08:30
-Hora de salida: 10:15
-------------------
---- Vehículo ---
-Propietario: Ana López
-Modelo: Ford Fiesta
-Matrícula: XYZ5678
-Hora de llegada: 08:50
-Hora de salida: 09:45
-------------------
-
-======================================================
-NOTA: Este sistema gestiona:
-- Estacionamiento (pila).
-- Cola de espera (cola circular).
-- Historial de vehículos (lista dinámica).
-======================================================
-*/
