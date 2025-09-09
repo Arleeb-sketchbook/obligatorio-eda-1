@@ -354,3 +354,117 @@ int main() {
     free(historial.autos);
     return 0;
 }
+
+/* 
+======================================================
+        SISTEMA DE ESTACIONAMIENTO Y COLA
+======================================================
+
+MANUAL DE EJEMPLOS DE EJECUCIÓN:
+
+Ejemplo 1: Registrar entrada de un vehículo
+------------------------------------------
+Menú principal:
+1. Ver Estacionamiento
+2. Ver cola de espera
+3. Ver historial de vehículos
+0. Salir
+Seleccione una opción: 1
+
+Submenú de estacionamiento:
+1. Registrar Entrada de Vehículo
+2. Registrar Salida de Vehículo
+3. Ver Estacionamiento actual
+0. Volver
+Seleccione una opción: 1
+
+Ingrese nombre del propietario: Juan Perez
+Ingrese modelo del auto: Toyota Corolla
+Ingrese matrícula (7 caracteres): ABC1234
+Ingrese hora de llegada (hh): 8
+Ingrese minuto de llegada (mm): 30
+
+Salida en pantalla:
+"Vehículo registrado correctamente."
+
+
+Ejemplo 2: Registrar salida de un vehículo
+------------------------------------------
+Menú principal -> Opción 1 (Estacionamiento)
+Submenú -> Opción 2 (Registrar Salida)
+
+Ingrese hora de salida (hh): 10
+Ingrese minuto de salida (mm): 15
+
+Salida en pantalla:
+--- Vehículo ---
+Propietario: Juan Perez
+Modelo: Toyota Corolla
+Matrícula: ABC1234
+Hora de llegada: 08:30
+Hora de salida: 10:15
+------------------
+
+El vehículo queda guardado en el HISTORIAL.
+
+
+Ejemplo 3: Cola de espera
+-------------------------
+Si el estacionamiento está lleno, al registrar un nuevo vehículo:
+Salida en pantalla:
+"Estacionamiento lleno. Vehículo enviado a la cola de espera."
+
+Para ver los autos en espera:
+Menú principal -> Opción 2 (Cola de espera)
+Submenú -> Opción 1 (Ver Cola de espera)
+
+
+Ejemplo 4: Registrar salida desde la cola
+-----------------------------------------
+Menú principal -> Opción 2 (Cola de espera)
+Submenú -> Opción 2 (Registrar Salida)
+
+Ingrese hora de salida (hh): 9
+Ingrese minuto de salida (mm): 45
+
+Salida en pantalla:
+Salida de la cola:
+--- Vehículo ---
+Propietario: Ana López
+Modelo: Ford Fiesta
+Matrícula: XYZ5678
+Hora de llegada: 08:50
+Hora de salida: 09:45
+------------------
+
+El vehículo queda guardado en el HISTORIAL.
+
+
+Ejemplo 5: Consultar historial
+------------------------------
+Menú principal -> Opción 3 (Ver historial de vehículos)
+
+Salida en pantalla (ejemplo):
+=== Historial de Vehículos ===
+--- Vehículo ---
+Propietario: Juan Perez
+Modelo: Toyota Corolla
+Matrícula: ABC1234
+Hora de llegada: 08:30
+Hora de salida: 10:15
+------------------
+--- Vehículo ---
+Propietario: Ana López
+Modelo: Ford Fiesta
+Matrícula: XYZ5678
+Hora de llegada: 08:50
+Hora de salida: 09:45
+------------------
+
+======================================================
+NOTA: Este sistema gestiona:
+- Estacionamiento (pila).
+- Cola de espera (cola circular).
+- Historial de vehículos (lista dinámica).
+======================================================
+*/
