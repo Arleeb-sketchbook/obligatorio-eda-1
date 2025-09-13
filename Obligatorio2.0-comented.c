@@ -452,4 +452,17 @@ int main() {
                         }
                         default: printf("Opción inválida.\n");
                     }
-                } while (1);
+} while (1);
+                break;
+            }
+            case 3: mostrar_historial(&historial); break;
+            case 0: printf("Gracias por usar Autocar\n"); break;
+            default: printf("Opción inválida.\n");
+        }
+    } while (opcion != 0);
+
+    free(estacionamiento);
+    free(cola.autos);
+    free(historial.autos);
+    return 0;
+}
